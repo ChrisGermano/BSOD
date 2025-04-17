@@ -10,7 +10,7 @@ import EasterEgg from './components/EasterEgg';
 import ReactGA from 'react-ga4';
 
 // Configure axios defaults
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8069';
+const API_URL = process.env.REACT_APP_API_URL || 'https://api.chrisgermano.dev';
 console.log('API URL:', API_URL);
 
 axios.defaults.baseURL = API_URL;

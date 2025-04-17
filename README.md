@@ -44,8 +44,8 @@ This will start both the React development server and the Node.js backend concur
 
 ## Development
 
-- The React frontend will run on `http://localhost:8068`
-- The Node.js backend will run on `http://localhost:8069`
+- The React frontend will run on `https://chrisgermano.dev`
+- The Node.js backend will run on `https://api.chrisgermano.dev`
 
 ## Production Build
 

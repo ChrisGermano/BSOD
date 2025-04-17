@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 8069;
 // Development mode configuration
 if (process.env.NODE_ENV !== 'production') {
     console.log('Running in development mode');
-    console.log('CORS will allow requests from:', ['http://localhost:8068', 'http://127.0.0.1:8068']);
+    console.log('CORS will allow requests from:', ['https://chrisgermano.dev']);
 }
 
 // Configure multer for file uploads
@@ -48,7 +48,7 @@ app.use(helmet({
             scriptSrc: ["'self'", "'unsafe-inline'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "blob:"],
-            connectSrc: ["'self'", "http://localhost:8068", "http://127.0.0.1:8068"],
+            connectSrc: ["'self'", "https://chrisgermano.dev"],
             fontSrc: ["'self'"],
             objectSrc: ["'none'"],
             mediaSrc: ["'self'"],
@@ -82,7 +82,7 @@ app.use(flash());
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production' 
         ? process.env.CORS_ORIGIN 
-        : ['http://localhost:8068', 'http://127.0.0.1:8068'],
+        : ['https://chrisgermano.dev'],
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token'],
     credentials: true,
