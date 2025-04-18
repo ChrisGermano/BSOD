@@ -6,9 +6,10 @@ module.exports = {
       watch: ['server'],
       ignore_watch: ['node_modules', 'uploads'],
       env: {
-        CORS_ORIGIN: 'https://chrisgermano.dev',
         NODE_ENV: 'production',
-        PORT: 8069
+        PORT: 8069,
+        SESSION_SECRET: 'your-secret-key-here',
+        CORS_ORIGIN: 'https://chrisgermano.dev'
       }
     },
     {
