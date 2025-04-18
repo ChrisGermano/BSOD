@@ -5,6 +5,7 @@ import axios from 'axios';
 import Admin from './pages/Admin';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
+import Procrastinate from './pages/Procrastinate';
 import ErrorCode from './components/ErrorCode';
 import ReferrerText from './components/ReferrerText';
 import EasterEgg from './components/EasterEgg';
@@ -101,6 +102,7 @@ function App() {
                             } />
                             <Route path="/portfolio" element={<Portfolio />} />
                             <Route path="/about" element={<About />} />
+                            <Route path="/game" element={<Procrastinate />} />
                             {showAdmin && <Route path="/admin" element={<Admin />} />}
                         </Routes>
                     </div>
