@@ -12,7 +12,7 @@ const Portfolio = () => {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get('/api/projects');
+                const response = await axios.get('https://chrisgermano.dev/api/projects');
                 setProjects(response.data);
             } catch (err) {
                 setError('Failed to load projects');

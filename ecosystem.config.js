@@ -6,6 +6,7 @@ module.exports = {
       watch: ['server'],
       ignore_watch: ['node_modules', 'uploads'],
       env: {
+        CORS_ORIGIN: 'https://chrisgermano.dev',
         NODE_ENV: 'production',
         PORT: 8069
       }
@@ -19,7 +20,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 8068,
-        REACT_APP_API_URL: 'https://chrisgermano.dev'
+        REACT_APP_API_URL: 'https://api.chrisgermano.dev'
       }
     }
   ]
