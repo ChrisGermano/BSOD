@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
-import axios from 'axios';
 import Admin from './pages/Admin';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
@@ -10,38 +9,7 @@ import ErrorCode from './components/ErrorCode';
 import ReferrerText from './components/ReferrerText';
 import EasterEgg from './components/EasterEgg';
 import ReactGA from 'react-ga4';
-
-// Configure axios defaults
-const API_URL = process.env.REACT_APP_API_URL || 'https://api.chrisgermano.dev';
-console.log('API URL:', API_URL);
-
-axios.defaults.baseURL = API_URL;
-axios.defaults.withCredentials = true;
-axios.defaults.headers.common['Content-Type'] = 'application/json';
-
-// Add request interceptor for logging
-axios.interceptors.request.use(
-    config => {
-        console.log('Making request to:', config.url);
-        return config;
-    },
-    error => {
-        console.error('Request error:', error);
-        return Promise.reject(error);
-    }
-);
-
-// Add response interceptor for error handling
-axios.interceptors.response.use(
-    response => response,
-    error => {
-        if (error.code === 'ECONNREFUSED') {
-            console.error('Connection refused. Is the server running on', API_URL, '?');
-        }
-        console.error('Response error:', error.message);
-        return Promise.reject(error);
-    }
-);
+import './App.css';
 
 // Initialize Google Analytics
 ReactGA.initialize('G-2330ZL3JF2');
@@ -85,9 +53,9 @@ function App() {
                 <PageTracker />
                 <div className="bsod-container">
                     <nav>
-                        <Link to="/" className="bsod-button">[Home]</Link>
-                        <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
-                        <Link to="/about" className="bsod-button">[About]</Link>
+                        <Link to="/" className="bsod-button">[ Home ]</Link>
+                        <Link to="/portfolio" className="bsod-button">[ Portfolio ]</Link>
+                        <Link to="/about" className="bsod-button">[ About ]</Link>
                     </nav>
                     <div className="bsod-content">
                         <Routes>
@@ -102,7 +70,7 @@ function App() {
                             } />
                             <Route path="/portfolio" element={<Portfolio />} />
                             <Route path="/about" element={<About />} />
-                            <Route path="/game" element={<Procrastinate />} />
+                            <Route path="/procrastinate" element={<Procrastinate />} />
                             {showAdmin && <Route path="/admin" element={<Admin />} />}
                         </Routes>
                     </div>
