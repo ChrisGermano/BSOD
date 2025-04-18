@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 import axios from 'axios';
 import Admin from './pages/Admin';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
+import Procrastinate from './pages/Procrastinate';
 import ErrorCode from './components/ErrorCode';
 import ReferrerText from './components/ReferrerText';
 import EasterEgg from './components/EasterEgg';
@@ -78,36 +80,40 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <PageTracker />
-            <div className="bsod-container">
-                <nav>
-                    <Link to="/" className="bsod-button">[Home]</Link>
-                    <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
-                    <Link to="/about" className="bsod-button">[About]</Link>
-                </nav>
-                <div className="bsod-content">
-                    <Routes>
-                        <Route path="/" element={
-                            <div>
-                                <h1 className="bsod-header">Chris Germano</h1>
-                                <p className="bsod-details">An error has occurred. To continue:</p>
-                                <p className="bsod-details">Press Enter to return to <ReferrerText />, or</p>
-                                <p className="bsod-details">Press CTRL+ALT+DEL to restart your computer. If you do this, you will lose any unsaved information in all open applications.</p>
-                                <p className="bsod-details">Error: <ErrorCode length={2} /> : <ErrorCode length={4} /> : <ErrorCode length={8} /></p>
-                            </div>
-                        } />
-                        <Route path="/portfolio" element={<Portfolio />} />
-                        <Route path="/about" element={<About />} />
-                        {showAdmin && <Route path="/admin" element={<Admin />} />}
-                    </Routes>
+        <CookiesProvider>
+            <Router>
+                <PageTracker />
+                <div className="bsod-container">
+                    <nav>
+                        <Link to="/" className="bsod-button">[Home]</Link>
+                        <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
+                        <Link to="/about" className="bsod-button">[About]</Link>
+                        <Link to="/procrastinate" className="bsod-button">[Procrastinate]</Link>
+                    </nav>
+                    <div className="bsod-content">
+                        <Routes>
+                            <Route path="/" element={
+                                <div>
+                                    <h1 className="bsod-header">Chris Germano</h1>
+                                    <p className="bsod-details">An error has occurred. To continue:</p>
+                                    <p className="bsod-details">Press Enter to return to <ReferrerText />, or</p>
+                                    <p className="bsod-details">Press CTRL+ALT+DEL to restart your computer. If you do this, you will lose any unsaved information in all open applications.</p>
+                                    <p className="bsod-details">Error: <ErrorCode length={2} /> : <ErrorCode length={4} /> : <ErrorCode length={8} /></p>
+                                </div>
+                            } />
+                            <Route path="/portfolio" element={<Portfolio />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/procrastinate" element={<Procrastinate />} />
+                            {showAdmin && <Route path="/admin" element={<Admin />} />}
+                        </Routes>
+                    </div>
+                    <div className="bsod-footer">
+                        <p className="bsod-footer-text">Press any key to continue <span className="bsod-uscore">_</span></p>
+                        <EasterEgg message="Continue where? This is a website." triggerType="alphanumeric" reset={resetEasterEggs} />
+                    </div>
                 </div>
-                <div className="bsod-footer">
-                    <p className="bsod-footer-text">Press any key to continue <span className="bsod-uscore">_</span></p>
-                    <EasterEgg message="Continue where? This is a website." triggerType="alphanumeric" reset={resetEasterEggs} />
-                </div>
-            </div>
-        </Router>
+            </Router>
+        </CookiesProvider>
     );
 }
 

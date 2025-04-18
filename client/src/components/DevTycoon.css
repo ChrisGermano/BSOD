@@ -1,0 +1,102 @@
+.dev-tycoon {
+    background-color: #000080;
+    color: white;
+    padding: 20px;
+    font-family: 'Courier New', monospace;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.dev-tycoon .stats {
+    background-color: #0000AA;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #FFFFFF;
+}
+
+.dev-tycoon .projects {
+    background-color: #0000AA;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #FFFFFF;
+}
+
+.dev-tycoon .shop {
+    background-color: #0000AA;
+    padding: 15px;
+    border: 2px solid #FFFFFF;
+}
+
+.dev-tycoon button {
+    background-color: #000080;
+    color: white;
+    border: 2px solid #FFFFFF;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.dev-tycoon button:hover:not(:disabled) {
+    background-color: #0000AA;
+}
+
+.dev-tycoon button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.dev-tycoon h2, .dev-tycoon h3 {
+    color: #FFFFFF;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.dev-tycoon p {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.ascii-computer {
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.ascii-computer:hover {
+    transform: scale(1.05);
+}
+
+.ascii-computer pre {
+    display: inline-block;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1;
+    color: #FFFFFF;
+}
+
+.floating-money {
+    position: fixed;
+    color: #00FF00;
+    font-weight: bold;
+    font-size: 20px;
+    pointer-events: none;
+    animation: floatUp 0.5s ease-out forwards;
+    z-index: 1000;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+} 
