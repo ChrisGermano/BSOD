@@ -1,117 +1,165 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import Upgrades from './Upgrades';
 
 const DevTycoon = () => {
-    const [cookies, setCookie] = useCookies(['devtycoon']);
-    const [money, setMoney] = useState(cookies.devtycoon?.money || 0);
-    const [linesOfCode, setLinesOfCode] = useState(cookies.devtycoon?.linesOfCode || 0);
-    const [devs, setDevs] = useState(cookies.devtycoon?.devs || 0);
-    const [hardware, setHardware] = useState(cookies.devtycoon?.hardware || {
-        keyboard: 0,
-        monitor: 0,
-        cpu: 0,
-        gpu: 0
-    });
-    const [projects, setProjects] = useState(cookies.devtycoon?.projects || {
-        website: 0,
-        app: 0,
-        game: 0
-    });
+    const [cookies, setCookie, removeCookie] = useCookies(['chrisSimulator']);
+    const [money, setMoney] = useState(cookies.chrisSimulator?.money || 0);
+    const [linesOfCode, setLinesOfCode] = useState(cookies.chrisSimulator?.linesOfCode || 0);
+    const [upgrades, setUpgrades] = useState(new Upgrades());
     const [floatingMoney, setFloatingMoney] = useState([]);
+    const [floatingPhrases, setFloatingPhrases] = useState([]);
+    const [tickTime, setTickTime] = useState(2000);
+    const [tickCount, setTickCount] = useState(0);
+    const [isSad, setIsSad] = useState(false);
 
-    const prices = {
-        dev: 100,
-        keyboard: 50,
-        monitor: 200,
-        cpu: 500,
-        gpu: 1000
-    };
+    const businessPhrases = [
+        "Let's take this offline",
+        "Let's circle back",
+        "Scope creep",
+        "Do the needful",
+        "What's your capacity?",
+        "This needs refinement"
+    ];
 
-    const projectValues = {
-        website: 10,
-        app: 25,
-        game: 50
-    };
+    // Initialize upgrades from cookies
+    useEffect(() => {
+        if (cookies.chrisSimulator?.upgrades) {
+            upgrades.setUpgrades(cookies.chrisSimulator.upgrades);
+        }
+    }, [cookies.chrisSimulator?.upgrades, upgrades]);
 
     const handleComputerClick = (e) => {
-        setMoney(prev => prev + 1);
-        
-        // Create a new floating money element
-        const newMoney = {
-            id: Date.now(),
-            x: e.clientX,
-            y: e.clientY
-        };
-        setFloatingMoney(prev => [...prev, newMoney]);
+        const clickValue = upgrades.calculateClickValue();
+        if (clickValue > 0) {
+            setMoney(prev => prev + clickValue);
+            
+            const newMoney = {
+                id: Date.now(),
+                x: e.clientX,
+                y: e.clientY,
+                value: clickValue
+            };
+            setFloatingMoney(prev => [...prev, newMoney]);
 
-        // Remove the floating money after animation
-        setTimeout(() => {
-            setFloatingMoney(prev => prev.filter(m => m.id !== newMoney.id));
-        }, 500);
+            setTimeout(() => {
+                setFloatingMoney(prev => prev.filter(m => m.id !== newMoney.id));
+            }, 500);
+        }
+    };
+
+    const buyUpgrade = (type) => {
+        if (upgrades.canAfford(type, money)) {
+            if (type === 'merge') {
+                setMoney(0);
+                setTickTime(1000);
+            }
+            setMoney(prev => prev - upgrades.getPrice(type));
+            upgrades.buyUpgrade(type);
+        }
     };
 
     // Game loop
     useEffect(() => {
         const interval = setInterval(() => {
-            // Generate lines of code based on devs and hardware
-            const baseLines = devs * (1 + hardware.keyboard * 0.1 + hardware.monitor * 0.2 + hardware.cpu * 0.3 + hardware.gpu * 0.4);
-            const newLines = Math.floor(baseLines);
-            setLinesOfCode(prev => prev + newLines);
+            const passiveIncome = upgrades.calculatePassiveIncome();
+            if (passiveIncome > 0) {
+                setMoney(prev => prev + passiveIncome);
+                
+                // Create floating money for passive income
+                const newMoney = {
+                    id: Date.now(),
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    value: passiveIncome
+                };
+                setFloatingMoney(prev => [...prev, newMoney]);
 
-            // Convert lines of code to projects
-            const newProjects = {
-                website: Math.floor(linesOfCode / 100),
-                app: Math.floor(linesOfCode / 500),
-                game: Math.floor(linesOfCode / 1000)
-            };
-            setProjects(newProjects);
+                setTimeout(() => {
+                    setFloatingMoney(prev => prev.filter(m => m.id !== newMoney.id));
+                }, 500);
+            } else if (passiveIncome < 0) {
+                setMoney(prev => prev + passiveIncome);
+            }
 
-            // Calculate income
-            const income = 
-                newProjects.website * projectValues.website +
-                newProjects.app * projectValues.app +
-                newProjects.game * projectValues.game;
-            setMoney(prev => prev + income);
+            // Update tick time
+            setTickTime(upgrades.calculateTickTime());
+
+            // Random business phrase
+            setTickCount(prev => {
+                const newCount = prev + 1;
+                if (newCount >= Math.floor(Math.random() * 10) + 10) { // Random between 10-20
+                    const phrase = businessPhrases[Math.floor(Math.random() * businessPhrases.length)];
+                    const newPhrase = {
+                        id: Date.now(),
+                        text: phrase,
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight
+                    };
+                    setFloatingPhrases(prev => [...prev, newPhrase]);
+                    setTimeout(() => {
+                        setFloatingPhrases(prev => prev.filter(p => p.id !== newPhrase.id));
+                    }, 2000);
+                    return 0;
+                }
+                return newCount;
+            });
 
             // Save game state
-            setCookie('devtycoon', {
+            setCookie('chrisSimulator', {
                 money,
                 linesOfCode,
-                devs,
-                hardware,
-                projects: newProjects
-            }, { path: '/', maxAge: 31536000 }); // 1 year expiry
-        }, 1000);
+                upgrades: upgrades.getAllUpgrades()
+            }, { path: '/', maxAge: 31536000 });
+        }, tickTime);
 
         return () => clearInterval(interval);
-    }, [devs, hardware, linesOfCode, money, setCookie]);
+    }, [money, linesOfCode, upgrades, tickTime, setCookie]);
 
-    const buyDev = () => {
-        if (money >= prices.dev) {
-            setMoney(prev => prev - prices.dev);
-            setDevs(prev => prev + 1);
-        }
+    const handleReset = () => {
+        removeCookie('chrisSimulator');
+        setMoney(0);
+        setLinesOfCode(0);
+        setTickTime(2000);
+        setUpgrades(new Upgrades());
+        setFloatingMoney([]);
+        setFloatingPhrases([]);
+        setTickCount(0);
+        setIsSad(false);
     };
 
-    const buyHardware = (type) => {
-        if (money >= prices[type]) {
-            setMoney(prev => prev - prices[type]);
-            setHardware(prev => ({
-                ...prev,
-                [type]: prev[type] + 1
-            }));
+    // Check for sad state
+    useEffect(() => {
+        if (money < -100000 && !isSad) {
+            setIsSad(true);
+        } else if (money >= -100000 && isSad) {
+            setIsSad(false);
         }
-    };
+    }, [money, isSad]);
 
     return (
         <div className="dev-tycoon">
             <div className="ascii-computer" onClick={handleComputerClick}>
                 <pre>
-{`    _________________
+{isSad ? `    _________________
    |  ___________  |
    | |           | |
-   | |   0   0   | |
-   | |     -     | |
+   | |   ಠ   ಥ  | |
+   | |           | |
+   | |     ∩     | |
+   | |___________| |
+   |_______________|
+        |  |  |
+     ___|  |  |___
+    /_____________\\
+   /               \\
+  /                 \\
+ /                   \\
+/                     \\` : `    _________________
+   |  ___________  |
+   | |           | |
+   | |   o   O   | |
+   | |           | |
    | |   \\___/   | |
    | |___________| |
    |_______________|
@@ -133,39 +181,70 @@ const DevTycoon = () => {
                         top: money.y
                     }}
                 >
-                    $1
+                    ${money.value}
+                </div>
+            ))}
+            {floatingPhrases.map(phrase => (
+                <div 
+                    key={phrase.id}
+                    className="floating-phrase"
+                    style={{
+                        left: phrase.x,
+                        top: phrase.y
+                    }}
+                >
+                    {phrase.text}
                 </div>
             ))}
             <div className="stats">
                 <h2>💰 ${money.toLocaleString()}</h2>
-                <p>👨‍💻 Developers: {devs}</p>
-                <p>📝 Lines of Code: {linesOfCode.toLocaleString()}</p>
+                <p>⏱️ Velocity: {tickTime}ms</p>
+                <p>💵 Per Deliverable: ${upgrades.calculateClickValue()}</p>
+                <p>📈 Per Sprint: ${upgrades.calculatePassiveIncome()}</p>
+                <p>🏢 Mergers: {upgrades.getUpgradeCount('merge')}</p>
             </div>
             
-            <div className="projects">
-                <h3>Completed Projects</h3>
-                <p>🌐 Websites: {projects.website}</p>
-                <p>📱 Apps: {projects.app}</p>
-                <p>🎮 Games: {projects.game}</p>
-            </div>
-
             <div className="shop">
                 <h3>Hire & Upgrade</h3>
-                <button onClick={buyDev} disabled={money < prices.dev}>
-                    Hire Developer (${prices.dev})
-                </button>
-                <button onClick={() => buyHardware('keyboard')} disabled={money < prices.keyboard}>
-                    Upgrade Keyboard (${prices.keyboard})
-                </button>
-                <button onClick={() => buyHardware('monitor')} disabled={money < prices.monitor}>
-                    Upgrade Monitor (${prices.monitor})
-                </button>
-                <button onClick={() => buyHardware('cpu')} disabled={money < prices.cpu}>
-                    Upgrade CPU (${prices.cpu})
-                </button>
-                <button onClick={() => buyHardware('gpu')} disabled={money < prices.gpu}>
-                    Upgrade GPU (${prices.gpu})
-                </button>
+                {Object.keys(upgrades.basePrices)
+                    .filter(type => type !== 'merge')
+                    .map(type => (
+                        <div key={type} className="upgrade-item">
+                            <button 
+                                className="upgrade-button"
+                                onClick={() => buyUpgrade(type)} 
+                                disabled={!upgrades.canAfford(type, money)}
+                            >
+                                {type.charAt(0).toUpperCase() + type.slice(1)} (${upgrades.getPrice(type).toLocaleString()})
+                                {upgrades.getUpgradeCount(type) !== null && (
+                                    <span className="upgrade-count">x{upgrades.getUpgradeCount(type)}</span>
+                                )}
+                            </button>
+                            <button className="info-button">i</button>
+                            <div className="info-tooltip">{upgrades.getTooltip(type)}</div>
+                        </div>
+                    ))}
+                <div className="upgrade-item">
+                    <button 
+                        className="upgrade-button"
+                        onClick={() => buyUpgrade('merge')} 
+                        disabled={!upgrades.canAfford('merge', money)}
+                    >
+                        Merge
+                    </button>
+                    <button className="info-button">i</button>
+                    <div className="info-tooltip">{upgrades.getTooltip('merge')}</div>
+                </div>
+                {isSad && (
+                    <div className="upgrade-item">
+                        <button 
+                            className="upgrade-button reset-button"
+                            onClick={handleReset}
+                        >
+                            Reset Game
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

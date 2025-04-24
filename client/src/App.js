@@ -5,6 +5,7 @@ import Admin from './pages/Admin';
 import Portfolio from './pages/Portfolio';
 import About from './pages/About';
 import Procrastinate from './pages/Procrastinate';
+import NotFound from './pages/NotFound';
 import ErrorCode from './components/ErrorCode';
 import ReferrerText from './components/ReferrerText';
 import EasterEgg from './components/EasterEgg';
@@ -53,9 +54,9 @@ function App() {
                 <PageTracker />
                 <div className="bsod-container">
                     <nav>
-                        <Link to="/" className="bsod-button">[ Home ]</Link>
-                        <Link to="/portfolio" className="bsod-button">[ Portfolio ]</Link>
-                        <Link to="/about" className="bsod-button">[ About ]</Link>
+                        <Link to="/" className="bsod-button">[Home]</Link>
+                        <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
+                        <Link to="/about" className="bsod-button">[About]</Link>
                     </nav>
                     <div className="bsod-content">
                         <Routes>
@@ -72,6 +73,7 @@ function App() {
                             <Route path="/about" element={<About />} />
                             <Route path="/procrastinate" element={<Procrastinate />} />
                             {showAdmin && <Route path="/admin" element={<Admin />} />}
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>
                     <div className="bsod-footer">
