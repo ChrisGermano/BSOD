@@ -10,6 +10,7 @@ const NotFound = () => {
     const rendererRef = useRef(null);
     const animationFrameIdRef = useRef(null);
     const monitorRef = useRef(null);
+    const textRef = useRef(null);
 
     useEffect(() => {
         // Clean up any existing Three.js canvas
@@ -119,6 +120,7 @@ const NotFound = () => {
                 
                 const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
                 const text = new THREE.Mesh(textGeometry, textMaterial);
+                textRef.current = text;
                 
                 // Center the text
                 textGeometry.computeBoundingBox();
@@ -126,7 +128,7 @@ const NotFound = () => {
                 text.position.x = 0;
                 text.position.y = 0;
                 text.position.z = -1; // Slightly in front of the monitor screen
-                
+
                 // Create a container for text
                 const container = new THREE.Group();
                 container.add(text);
@@ -162,6 +164,15 @@ const NotFound = () => {
         // Animation loop
         const animate = () => {
             animationFrameIdRef.current = requestAnimationFrame(animate);
+            
+            // Animate text color
+            if (textRef.current) {
+                const time = Date.now() * 0.005; // Convert to seconds
+                const hue = (Math.sin(time) * 0.5 + 0.5) * 60; // Oscillate between 0 (red) and 60 (yellow)
+                const color = new THREE.Color().setHSL(hue / 360, 1, 0.5);
+                textRef.current.material.color.copy(color);
+            }
+            
             renderer.render(scene, camera);
         };
         animate();
@@ -209,6 +220,7 @@ const NotFound = () => {
             rendererRef.current = null;
             animationFrameIdRef.current = null;
             monitorRef.current = null;
+            textRef.current = null;
         };
     }, []);
 
