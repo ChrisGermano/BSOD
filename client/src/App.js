@@ -53,7 +53,7 @@ function App() {
             <Router>
                 <PageTracker />
                 <div className="bsod-container">
-                    <nav>
+                    <nav style={{ position: 'relative', zIndex: 1000 }}>
                         <Link to="/" className="bsod-button">[Home]</Link>
                         <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
                         <Link to="/about" className="bsod-button">[About]</Link>
@@ -76,7 +76,7 @@ function App() {
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>
-                    <div className="bsod-footer">
+                    <div className="bsod-footer" style={{ position: 'relative', zIndex: 1000 }}>
                         <p className="bsod-footer-text">Press any key to continue <span className="bsod-uscore">_</span></p>
                         <EasterEgg message="Continue where? This is a website." triggerType="alphanumeric" reset={resetEasterEggs} />
                     </div>
