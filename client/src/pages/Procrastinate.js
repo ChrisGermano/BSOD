@@ -1,11 +1,11 @@
 import React from 'react';
-import DevTycoon from '../components/DevTycoon';
-import '../components/DevTycoon.css';
+import Procrastinator from '../components/Procrastinator';
+import '../components/Procrastinator.css';
 
 function Procrastinate() {
     return (
         <div>
-            <DevTycoon />
+            <Procrastinator />
         </div>
     );
 }
