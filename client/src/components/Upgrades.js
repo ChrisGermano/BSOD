@@ -34,7 +34,6 @@ class Upgrades {
     calculatePrice(type) {
         const basePrice = this.basePrices[type];
         const count = this.upgrades[type];
-        // Calculate 5% increase for each purchase, rounded down
         const increase = Math.floor(basePrice * 0.05 * count);
         return basePrice + increase;
     }
@@ -55,13 +54,12 @@ class Upgrades {
         income -= this.upgrades.developer * 10;
         income -= this.upgrades.pc * 5;
         income -= this.upgrades.dataCenter * 100;
-        income += this.upgrades.ai > 0 ? this.calculateClickValue() : 0;
+        income += this.calculateClickValue();
         return income;
     }
 
     calculateTickTime() {
         let time = 1000;
-        // Apply 20% reduction for each AI upgrade and 5% for each data center
         time = time * Math.pow(0.8, this.upgrades.ai) * Math.pow(0.95, this.upgrades.dataCenter);
         return Math.max(Math.floor(time), 100);
     }
@@ -92,13 +90,11 @@ class Upgrades {
 
     buyUpgrade(type) {
         if (type === 'merge') {
-            // Reset all upgrades except merge
             Object.keys(this.upgrades).forEach(key => {
                 if (key !== 'merge') {
                     this.upgrades[key] = 0;
                 }
             });
-            // Increment merge count
             this.upgrades.merge++;
         } else {
             this.upgrades[type]++;

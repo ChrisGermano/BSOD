@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Upgrades from './Upgrades';
 
-const DevTycoon = () => {
+const Procrastinator = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['procrastinator']);
     const [money, setMoney] = useState(cookies.procrastinator?.money || 0);
     const [linesOfCode, setLinesOfCode] = useState(cookies.procrastinator?.linesOfCode || 0);
@@ -22,7 +22,6 @@ const DevTycoon = () => {
         "This needs refinement"
     ];
 
-    // Initialize upgrades from cookies
     useEffect(() => {
         if (cookies.procrastinator?.upgrades) {
             upgrades.setUpgrades(cookies.procrastinator.upgrades);
@@ -52,21 +51,39 @@ const DevTycoon = () => {
         if (upgrades.canAfford(type, money)) {
             if (type === 'merge') {
                 setMoney(0);
-                setTickTime(1000);
+                setTickTime(2000);
             }
             setMoney(prev => prev - upgrades.getPrice(type));
             upgrades.buyUpgrade(type);
         }
     };
 
-    // Game loop
+    const handleReset = () => {
+        removeCookie('procrastinator');
+        setMoney(0);
+        setLinesOfCode(0);
+        setTickTime(2000);
+        setUpgrades(new Upgrades());
+        setFloatingMoney([]);
+        setFloatingPhrases([]);
+        setTickCount(0);
+        setIsSad(false);
+    };
+
+    useEffect(() => {
+        if (money < -100000 && !isSad) {
+            setIsSad(true);
+        } else if (money >= -100000 && isSad) {
+            setIsSad(false);
+        }
+    }, [money, isSad]);
+
     useEffect(() => {
         const interval = setInterval(() => {
             const passiveIncome = upgrades.calculatePassiveIncome();
             if (passiveIncome > 0) {
                 setMoney(prev => prev + passiveIncome);
                 
-                // Create floating money for passive income
                 const newMoney = {
                     id: Date.now(),
                     x: Math.random() * window.innerWidth,
@@ -82,13 +99,11 @@ const DevTycoon = () => {
                 setMoney(prev => prev + passiveIncome);
             }
 
-            // Update tick time
             setTickTime(upgrades.calculateTickTime());
 
-            // Random business phrase
             setTickCount(prev => {
                 const newCount = prev + 1;
-                if (newCount >= Math.floor(Math.random() * 10) + 10) { // Random between 10-20
+                if (newCount >= Math.floor(Math.random() * 10) + 10) {
                     const phrase = businessPhrases[Math.floor(Math.random() * businessPhrases.length)];
                     const newPhrase = {
                         id: Date.now(),
@@ -105,7 +120,6 @@ const DevTycoon = () => {
                 return newCount;
             });
 
-            // Save game state
             setCookie('procrastinator', {
                 money,
                 linesOfCode,
@@ -116,29 +130,8 @@ const DevTycoon = () => {
         return () => clearInterval(interval);
     }, [money, linesOfCode, upgrades, tickTime, setCookie]);
 
-    const handleReset = () => {
-        removeCookie('procrastinator');
-        setMoney(0);
-        setLinesOfCode(0);
-        setTickTime(2000);
-        setUpgrades(new Upgrades());
-        setFloatingMoney([]);
-        setFloatingPhrases([]);
-        setTickCount(0);
-        setIsSad(false);
-    };
-
-    // Check for sad state
-    useEffect(() => {
-        if (money < -100000 && !isSad) {
-            setIsSad(true);
-        } else if (money >= -100000 && isSad) {
-            setIsSad(false);
-        }
-    }, [money, isSad]);
-
     return (
-        <div className="dev-tycoon">
+        <div className="procrastinator">
             <div className="ascii-computer" onClick={handleComputerClick}>
                 <pre>
 {isSad ? `    _________________
@@ -250,4 +243,4 @@ const DevTycoon = () => {
     );
 };
 
-export default DevTycoon; 
+export default Procrastinator; 
