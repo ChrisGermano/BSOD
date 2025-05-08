@@ -6,7 +6,7 @@ const Experiments = () => {
         {
             title: "Procrastinate",
             path: "/procrastinate",
-            description: "Run your own tech shop"
+            description: "Run your own tech shop in this classic clicker game"
         },
         {
             title: "Grafix",
@@ -16,7 +16,7 @@ const Experiments = () => {
         {
             title: "Pope Wars",
             path: "/pope-wars",
-            description: "Just some art"
+            description: "The Pope just died and you need to escape the Vatican with as much money as possible"
         }
     ];
 
