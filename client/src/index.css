@@ -94,6 +94,38 @@ body {
     color: #FFFFFF;
 }
 
+.experiments-list {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.experiment-item {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #C0C0C0;
+    text-align: left;
+}
+
+.experiment-item:hover {
+    border-color: #FFFFFF;
+}
+
+.bsod-link {
+    text-decoration: none;
+    color: #C0C0C0;
+}
+
+.bsod-link:hover {
+    color: #FFFFFF;
+}
+
+.bsod-subheader {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    color: #C0C0C0;
+}
+
 nav {
     display: flex;
     justify-content: center;

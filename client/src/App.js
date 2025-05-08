@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
 import Admin from './pages/Admin';
-import Portfolio from './pages/Portfolio';
 import About from './pages/About';
 import Procrastinate from './pages/Procrastinate';
+import Experiments from './pages/Experiments';
+import Grafix from './pages/Grafix';
+import PopeWars from './pages/PopeWars';
 import NotFound from './pages/NotFound';
 import ErrorCode from './components/ErrorCode';
 import ReferrerText from './components/ReferrerText';
@@ -55,7 +57,7 @@ function App() {
                 <div className="bsod-container">
                     <nav style={{ position: 'relative', zIndex: 1000 }}>
                         <Link to="/" className="bsod-button">[Home]</Link>
-                        <Link to="/portfolio" className="bsod-button">[Portfolio]</Link>
+                        <Link to="/experiments" className="bsod-button">[Experiments]</Link>
                         <Link to="/about" className="bsod-button">[About]</Link>
                     </nav>
                     <div className="bsod-content">
@@ -69,9 +71,11 @@ function App() {
                                     <p className="bsod-details">Error: <ErrorCode length={2} /> : <ErrorCode length={4} /> : <ErrorCode length={8} /></p>
                                 </div>
                             } />
-                            <Route path="/portfolio" element={<Portfolio />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/procrastinate" element={<Procrastinate />} />
+                            <Route path="/experiments" element={<Experiments />} />
+                            <Route path="/grafix" element={<Grafix />} />
+                            <Route path="/pope-wars" element={<PopeWars />} />
                             {showAdmin && <Route path="/admin" element={<Admin />} />}
                             <Route path="*" element={<NotFound />} />
                         </Routes>

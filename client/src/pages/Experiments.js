@@ -1,0 +1,42 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Experiments = () => {
+    const experiments = [
+        {
+            title: "Procrastinate",
+            path: "/procrastinate",
+            description: "Run your own tech shop"
+        },
+        {
+            title: "Grafix",
+            path: "/grafix",
+            description: "Just some art"
+        },
+        {
+            title: "Pope Wars",
+            path: "/pope-wars",
+            description: "Just some art"
+        }
+    ];
+
+    return (
+        <div>
+            <h1 className="bsod-header">Experiments</h1>
+            <p className="bsod-details">A collection of experimental features and side projects.</p>
+            
+            <div className="experiments-list">
+                {experiments.map((experiment, index) => (
+                    <div key={index} className="experiment-item">
+                        <Link to={experiment.path} className="bsod-link">
+                            <h2 className="bsod-subheader">{experiment.title}</h2>
+                        </Link>
+                        <p className="bsod-details">{experiment.description}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default Experiments; 
