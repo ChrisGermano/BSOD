@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 const Experiments = () => {
     const experiments = [
         {
+            title: "Discord TCG",
+            path: "https://github.com/ChrisGermano/DiscordTCG",
+            description: "A Discord bot framework for building and managing a TCG system",
+            isExternal: true
+        },
+        {
             title: "Procrastinate",
             path: "/procrastinate",
             description: "Run your own tech shop in this classic clicker game"
@@ -28,9 +34,15 @@ const Experiments = () => {
             <div className="experiments-list">
                 {experiments.map((experiment, index) => (
                     <div key={index} className="experiment-item">
-                        <Link to={experiment.path} className="bsod-link">
-                            <h2 className="bsod-subheader">{experiment.title}</h2>
-                        </Link>
+                        {experiment.isExternal ? (
+                            <a href={experiment.path} className="bsod-link" target="_blank" rel="noopener noreferrer">
+                                <h2 className="bsod-subheader">{experiment.title}</h2>
+                            </a>
+                        ) : (
+                            <Link to={experiment.path} className="bsod-link">
+                                <h2 className="bsod-subheader">{experiment.title}</h2>
+                            </Link>
+                        )}
                         <p className="bsod-details">{experiment.description}</p>
                     </div>
                 ))}
