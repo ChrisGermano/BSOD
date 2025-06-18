@@ -10,19 +10,15 @@ const Experiments = () => {
             isExternal: true
         },
         {
+            title: "-aA-",
+            path: "https://github.com/ChrisGermano/-aA-",
+            description: "An esoteric programming language based on Brainfuck - half as readable but twice as fun",
+            isExternal: true
+        },
+        {
             title: "Procrastinate",
             path: "/procrastinate",
             description: "Run your own tech shop in this classic clicker game"
-        },
-        {
-            title: "Grafix",
-            path: "/grafix",
-            description: "Just some art"
-        },
-        {
-            title: "Pope Wars",
-            path: "/pope-wars",
-            description: "The Pope just died and you need to escape the Vatican with as much money as possible"
         }
     ];
 
