@@ -5,7 +5,7 @@ const Experiments = () => {
     const experiments = [
         {
             title: "Discord TCG",
-            path: "https://github.com/ChrisGermano/DiscordTCG",
+            path: "https://discordtcg.com",
             description: "A Discord bot framework for building and managing a TCG system",
             isExternal: true
         },
